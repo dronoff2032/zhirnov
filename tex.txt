@@ -1,1 +1,129 @@
-ку
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp15
+{
+    using System;
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int choice = 0;
+            while (choice != 4)
+            {
+                Console.WriteLine("Меню:");
+                Console.WriteLine("1. Игра \"Угадай число\"");
+                Console.WriteLine("2. Таблица умножения");
+                Console.WriteLine("3. Вывод делителей числа");
+                Console.WriteLine("4. Выход");
+                Console.Write("Введите число: ");
+                choice = Convert.ToInt32(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+                        GuessNumberGame();
+                        break;
+                    case 2:
+                        MultiplicationTable();
+                        break;
+                    case 3:
+                        Divisors();
+                        break;
+                    case 4:
+                        Console.WriteLine("Выход");
+                        break;
+                    default:
+                        Console.WriteLine("Неверный выбор, попробуйте снова");
+                        break;
+                }
+
+                Console.WriteLine();
+            }
+        }
+
+        static void GuessNumberGame()
+        {
+            Console.WriteLine("Игра \"Угадай число\"");
+            Random random = new Random();
+            int randomNumber = random.Next(0, 101);
+            int guess;
+            int attempts = 0;
+
+            do
+            {
+                Console.Write("Введите число: ");
+                guess = Convert.ToInt32(Console.ReadLine());
+                attempts++;
+
+                if (guess < randomNumber)
+                {
+                    Console.WriteLine("Загаданное число больше");
+                }
+                else if (guess > randomNumber)
+                {
+                    Console.WriteLine("Загаданное число меньше");
+                }
+                else
+                {
+                    Console.WriteLine("Поздравляю! Вы угадали число {0} за {1} попыток", randomNumber, attempts);
+                }
+
+            } while (guess != randomNumber);
+
+            Console.WriteLine();
+        }
+
+        static void MultiplicationTable()
+        {
+            Console.WriteLine("Таблица умножения");
+
+            int[,] multiplicationTable = new int[10, 10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    multiplicationTable[i, j] = (i + 1) * (j + 1);
+                }
+            }
+
+            Console.WriteLine("Матрица таблицы умножения:");
+
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    Console.Write("{0}\t", multiplicationTable[i, j]);
+                }
+
+                Console.WriteLine();
+            }
+
+            Console.WriteLine();
+        }
+
+        static void Divisors()
+        {
+            Console.WriteLine("Вывод делителей числа");
+
+            Console.Write("Введите число: ");
+            int number = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Делители числа {0}: ", number);
+            for (int i = 1; i <= number; i++)
+            {
+                if (number % i == 0)
+                {
+                    Console.Write("{0} ", i);
+                }
+            }
+
+            Console.WriteLine();
+        }
+    }
+}
