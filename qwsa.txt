@@ -1,1 +1,71 @@
-qws
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading;
+
+class Piano
+{
+    private static Dictionary<ConsoleKey, int> keyNoteMap = new Dictionary<ConsoleKey, int>()
+    {
+        { ConsoleKey.A, 261 },
+        { ConsoleKey.W, 277 },
+        { ConsoleKey.S, 293 },
+        { ConsoleKey.E, 311 },
+        { ConsoleKey.D, 329 },
+        { ConsoleKey.F, 349 },
+        { ConsoleKey.T, 369 },
+        { ConsoleKey.G, 392 },
+        { ConsoleKey.Y, 415 },
+        { ConsoleKey.H, 440 },
+        { ConsoleKey.U, 466 },
+        { ConsoleKey.J, 493 },
+        { ConsoleKey.K, 523 }
+    };
+
+    private static Dictionary<ConsoleKey, int[]> octaveMap = new Dictionary<ConsoleKey, int[]>()
+    {
+        { ConsoleKey.F1, new int[] { 261, 294, 329 } },
+        { ConsoleKey.F2, new int[] { 293, 329, 370 } },
+        { ConsoleKey.F3, new int[] { 329, 370, 415 } }
+    };
+
+    private static bool isPlaying = false;
+
+    [DllImport("kernel32.dll")]
+    public static extern bool Beep(int frequency, int duration);
+
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Приветствую вас в моем пианино!");
+
+        while (true)
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+
+            if (keyInfo.Key == ConsoleKey.Escape)
+                break;
+
+            if (keyNoteMap.ContainsKey(keyInfo.Key))
+            {
+                int note = keyNoteMap[keyInfo.Key];
+                PlaySound(note);
+            }
+            else if (octaveMap.ContainsKey(keyInfo.Key))
+                ChangeOctave(octaveMap[keyInfo.Key]);
+        }
+    }
+
+    static void PlaySound(int frequency)
+    {
+        isPlaying = true;
+        Beep(frequency, 500);
+        isPlaying = false;
+    }
+
+    static void ChangeOctave(int[] octave)
+    {
+        keyNoteMap[ConsoleKey.A] = octave[0];
+        keyNoteMap[ConsoleKey.W] = octave[1];
+        keyNoteMap[ConsoleKey.S] = octave[2];
+    }
+}
